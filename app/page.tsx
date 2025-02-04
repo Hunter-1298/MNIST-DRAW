@@ -2,11 +2,10 @@
 
 import DrawingCanvas from "@/components/ui/DrawingCanvas";
 import { OutputChart } from "@/components/ui/OutputChart";
+import { CanvasProvider } from "@/context/CanvasContext";
 import Image from "next/image";
 import MNIST from '../public/mnist-background.jpg'
 export default function Home() {
-
-
   return (
     <main className="flex flex-col items-center min-h-screen bg-slate-800 p-8">
       {/* Full-width description div */}
@@ -17,19 +16,21 @@ export default function Home() {
       {/* Main content layout */}
       <div className="flex w-full flex-row m-32">
 
-        {/* First DrawingCanvas */}
-        <div className="flex flex-col items-center w-full">
-          <div className="absolute top-[310px] text-center ">
-            <h2 className="font-semibold text-white text-3xl">Draw a number [0-9]</h2>
+        <CanvasProvider>
+          {/* First DrawingCanvas */}
+          <div className="flex flex-col items-center w-full">
+            <div className="absolute top-[310px] text-center ">
+              <h2 className="font-semibold text-white text-3xl">Draw a number [0-9]</h2>
+            </div>
+            <DrawingCanvas />
           </div>
-          <DrawingCanvas />
-        </div>
 
-        <div className="flex flex-col justify-end items-center w-full">
-          {/* Place graph component here!*/}
-          <OutputChart />
-        </div>
+          <div className="flex flex-col justify-end items-center w-full">
+            {/* Place graph component here!*/}
+            <OutputChart />
+          </div>
 
+        </CanvasProvider>
       </div>
     </main>
   );
