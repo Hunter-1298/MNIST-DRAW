@@ -25,11 +25,15 @@ export default function Home() {
             <DrawingCanvas />
           </div>
 
-          <div className="flex flex-col justify-end items-center w-full">
+          <div className="flex flex-col justify-end items-center w-full ml-[-150px]">
             {/* Place graph component here!*/}
             <OutputChart />
           </div>
         </CanvasProvider>
+      </div>
+      <div className="flex flex-col w-full h-[100px] bg-blue-400 items-center justify-center text-center">
+        <h1 className="text-6xl font-extrabold text-white">Tech Stack</h1> {/* Big and bold */}
+        <h3>javascript, css, html, react, NextJS, python, pytorch</h3>
       </div>
     </main>
   );

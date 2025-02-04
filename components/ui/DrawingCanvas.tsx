@@ -1,5 +1,6 @@
 import { useRef, useState, useEffect } from "react";
 import { useCanvasContext } from "@/context/CanvasContext"; // Import the context
+import { Button } from "@/components/ui/button"
 
 export default function DrawingCanvas() {
     const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -11,8 +12,8 @@ export default function DrawingCanvas() {
         const canvas = canvasRef.current;
         if (!canvas) return;
 
-        canvas.width = 400;
-        canvas.height = 400;
+        canvas.width = 500;
+        canvas.height = 500;
         const ctx = canvas.getContext("2d");
         if (!ctx) return;
 
@@ -99,12 +100,12 @@ export default function DrawingCanvas() {
                 onMouseUp={stopDrawing}
                 onMouseMove={draw}
             />
-            <button
+            <Button
                 onClick={clearCanvas}
                 className="w-full max-w-[200px] m-4 font-bold rounded hover:bg-gray-400"
             >
                 Clear Canvas
-            </button>
+            </Button>
         </div>
     );
 }

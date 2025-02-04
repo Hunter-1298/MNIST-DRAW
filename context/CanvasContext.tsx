@@ -1,6 +1,7 @@
 // context/CanvasContext.tsx
 import React, { createContext, useContext, useState, ReactNode } from "react";
 import fetchPrediction from "@/utils/fetchPrediction";
+import { Button } from "@/components/ui/button"
 
 // Define a type for the canvas data (grayscale values)
 interface CanvasContextType {
