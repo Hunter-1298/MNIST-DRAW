@@ -1,5 +1,6 @@
 // context/CanvasContext.tsx
 import React, { createContext, useContext, useState, ReactNode } from "react";
+import fetchPrediction from "@/utils/fetchPrediction";
 
 // Define a type for the canvas data (grayscale values)
 interface CanvasContextType {
@@ -30,9 +31,9 @@ export const CanvasProvider: React.FC<CanvasProviderProps> = ({ children }) => {
     const [canvasData, setCanvasData] = useState<number[]>([]);
 
     // Placeholder for model prediction function
-    const fetchPrediction = async (data: number[]) => {
+    const handlefetchPrediction = async (data: number[]) => {
         console.log("Predicting with data", data);
-        return 0; // Returning a dummy prediction
+        return await fetchPrediction(data);
     };
 
     return (

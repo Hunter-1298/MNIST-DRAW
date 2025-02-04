@@ -29,7 +29,6 @@ export default function Home() {
             {/* Place graph component here!*/}
             <OutputChart />
           </div>
-
         </CanvasProvider>
       </div>
     </main>

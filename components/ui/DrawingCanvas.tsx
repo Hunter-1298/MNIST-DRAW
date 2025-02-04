@@ -1,13 +1,11 @@
-// components/DrawingCanvas.tsx
-import React, { useRef, useEffect, useState } from "react";
-import { Button } from "@/components/ui/button"; // Make sure Button is correctly imported
-import { useCanvasContext } from "@/context/CanvasContext"; // Import the useCanvasContext hook
+import { useRef, useState, useEffect } from "react";
+import { useCanvasContext } from "@/context/CanvasContext"; // Import the context
 
 export default function DrawingCanvas() {
-    const { canvasData, setCanvasData, fetchPrediction } = useCanvasContext();
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const ctxRef = useRef<CanvasRenderingContext2D | null>(null);
     const [drawing, setDrawing] = useState(false);
+    const { setCanvasData, fetchPrediction } = useCanvasContext(); // Access context
 
     useEffect(() => {
         const canvas = canvasRef.current;
@@ -18,10 +16,11 @@ export default function DrawingCanvas() {
         const ctx = canvas.getContext("2d");
         if (!ctx) return;
 
-        // Set initial canvas properties
+        // Set background to black
         ctx.fillStyle = "black";
         ctx.fillRect(0, 0, canvas.width, canvas.height);
 
+        // Set drawing properties
         ctx.lineWidth = 5;
         ctx.lineCap = "round";
         ctx.strokeStyle = "white";
@@ -36,19 +35,9 @@ export default function DrawingCanvas() {
         ctxRef.current.moveTo(e.nativeEvent.offsetX, e.nativeEvent.offsetY);
     };
 
-    const stopDrawing = async () => {
+    const stopDrawing = () => {
         setDrawing(false);
-        // After drawing stops, get the canvas data and normalize it
-        if (ctxRef.current && canvasRef.current) {
-            const canvas = canvasRef.current;
-            const ctx = ctxRef.current;
-            const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-            const data = imageData.data;
-            const grayscaleValues = Array.from(data).filter((_, index) => index % 4 === 0); // Extract RGBA channels, use only red for grayscale
-            const normalizedValues = normalizeGrayscale(grayscaleValues);
-            setCanvasData(normalizedValues); // Update the context with new data
-            await fetchPrediction(normalizedValues); // Trigger prediction with new data
-        }
+        extractCanvasData(); // Extract and update canvas data when drawing stops
     };
 
     const draw = (e: React.MouseEvent) => {
@@ -62,14 +51,43 @@ export default function DrawingCanvas() {
         const ctx = ctxRef.current;
         if (!canvas || !ctx) return;
 
+        // Clear the canvas and reapply the black background
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         ctx.fillStyle = "black";
         ctx.fillRect(0, 0, canvas.width, canvas.height);
     };
 
-    // Normalize the grayscale values to a 0-1 scale
-    const normalizeGrayscale = (values: number[]) => {
-        return values.map((value) => value / 255); // Normalize to [0, 1]
+    const extractCanvasData = () => {
+        const canvas = canvasRef.current;
+        if (!canvas) return;
+
+        // Create a temporary 28x28 canvas
+        const tempCanvas = document.createElement("canvas");
+        const tempCtx = tempCanvas.getContext("2d");
+        if (!tempCtx) return;
+
+        // Set the size to 28x28
+        tempCanvas.width = 28;
+        tempCanvas.height = 28;
+
+        // Scale down the original canvas to 28x28
+        tempCtx.drawImage(canvas, 0, 0, 28, 28);
+
+        // Get image data from the 28x28 canvas
+        const imageData = tempCtx.getImageData(0, 0, 28, 28);
+        const data = imageData.data;
+
+        // Create a 28x28 array to hold the grayscale values
+        const grayscaleValues: number[] = [];
+        for (let i = 0; i < data.length; i += 4) {
+            // Extract the red channel (grayscale values are the same in RGB)
+            const grayscale = data[i]; // Data[0], which is the red channel
+            grayscaleValues.push(grayscale / 255); // Normalize to 0-1 range
+        }
+
+        // Update the context with the grayscale values
+        setCanvasData(grayscaleValues);
+        fetchPrediction(grayscaleValues); // Fetch prediction after updating canvas data
     };
 
     return (
@@ -81,9 +99,12 @@ export default function DrawingCanvas() {
                 onMouseUp={stopDrawing}
                 onMouseMove={draw}
             />
-            <Button onClick={clearCanvas} className="w-full max-w-[200px] m-4 font-bold rounded hover:bg-gray-400">
+            <button
+                onClick={clearCanvas}
+                className="w-full max-w-[200px] m-4 font-bold rounded hover:bg-gray-400"
+            >
                 Clear Canvas
-            </Button>
+            </button>
         </div>
     );
 }
