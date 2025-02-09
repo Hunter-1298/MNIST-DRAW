@@ -1,36 +1,69 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+Real-Time MNIST Number Detector
+This project is a web application that allows users to draw digits on a canvas, and it detects the drawn number in real time using a trained MNIST model. The model predicts the number based on the drawn input, which is then processed through a neural network trained on the MNIST dataset.
 
-## Getting Started
+The app utilizes ONNX (Open Neural Network Exchange) for model inference and uses a Gaussian blur on the user’s input to mimic the conditions of the MNIST training data.
 
-First, run the development server:
+Features
+Draw on Canvas: Users can draw digits on a canvas using their mouse or touchscreen.
+Real-Time Prediction: As soon as the drawing stops, the app predicts the digit using an MNIST-trained neural network model.
+Blurred Input: The drawn input is automatically blurred to match the conditions of the MNIST training dataset, helping improve the prediction accuracy.
+Interactive Chart: Displays the predicted probabilities for each digit (0-9) in a bar chart.
+Tech Stack
+Frontend: React, Tailwind CSS
+Canvas API: Used for drawing and processing input.
+ONNX Runtime: Used for running the MNIST model in the browser.
+Chart.js: Visualizes the prediction probabilities with a bar chart.
+How It Works
+Drawing: Users can draw a digit on the canvas. The canvas size is 500x500px, and the drawing is automatically adjusted to 28x28px, which matches the input size of the MNIST model.
+Blurring: A Gaussian blur is applied to the drawn input to match the blur effect that was applied to the MNIST dataset during training.
+Prediction: Once the user stops drawing, the app captures the drawn image, processes it, and sends it to an ONNX model for prediction.
+Output: The predicted number is displayed, along with a probability distribution chart showing the confidence of each prediction (for digits 0-9).
+Getting Started
+To get started with the project, clone the repository and install the necessary dependencies.
+1. Clone the repository
+git clone https://github.com/YOUR_USERNAME/mnist-real-time-number-detector.git
+cd mnist-real-time-number-detector
+2. Install dependencies
+npm install3. Run the app
+bash
+Copy
+Edit
+npm start
+This will start the application locally on your machine. By default, it should be available at http://localhost:3000.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+Model
+The app uses an ONNX version of the MNIST model, which is a deep neural network trained on the MNIST dataset for digit classification. The model is loaded dynamically using the onnxruntime-web library, allowing for real-time inference in the browser.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Model Details
+Model type: Convolutional Neural Network (CNN)
+Input size: 28x28 pixels (grayscale image)
+Output: Probability distribution for each digit from 0 to 9
+Contributing
+If you'd like to contribute to this project, feel free to fork the repository and submit a pull request. Any improvements, bug fixes, or enhancements are welcome!
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+How to contribute:
+Fork the repository.
+Clone your fork locally:
+bash
+Copy
+Edit
+git clone https://github.com/YOUR_USERNAME/mnist-real-time-number-detector.git
+Create a new branch for your changes:
+bash
+Copy
+Edit
+git checkout -b feature-name
+Make your changes and commit them:
+bash
+Copy
+Edit
+git commit -m "Description of changes"
+Push your changes to your fork:
+bash
+Copy
+Edit
+git push origin feature-name
+Submit a pull request to the main repository.
+License
+This project is licensed under the MIT License - see the LICENSE file for details:> [!WARNING]
+> .
