@@ -24,32 +24,3 @@ The app utilizes ONNX (Open Neural Network Exchange) for model inference and use
 2. **Blurring**: A Gaussian blur is applied to the drawn input to match the blur effect that was applied to the MNIST dataset during training.
 3. **Prediction**: Once the user stops drawing, the app captures the drawn image, processes it, and sends it to an ONNX model for prediction.
 4. **Output**: The predicted number is displayed, along with a probability distribution chart showing the confidence of each prediction (for digits 0-9).
-
-## Getting Started
-
-To get started with the project, clone the repository and install the necessary dependencies.
-
-### 1. Clone the repository
-
-```bash
-git clone https://github.com/YOUR_USERNAME/mnist-real-time-number-detector.git
-cd mnist-real-time-number-detector
-2. Install dependencies
-bash
-Copy
-Edit
-npm install
-3. Run the app
-bash
-Copy
-Edit
-npm start
-This will start the application locally on your machine. By default, it should be available at http://localhost:3000.
-
-Model
-The app uses an ONNX version of the MNIST model, which is a deep neural network trained on the MNIST dataset for digit classification. The model is loaded dynamically using the onnxruntime-web library, allowing for real-time inference in the browser.
-
-Model Details
-Model type: Convolutional Neural Network (CNN)
-Input size: 28x28 pixels (grayscale image)
-Output: Probability distribution for each digit from 0 to 9
