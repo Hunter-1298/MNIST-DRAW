@@ -1,24 +1,16 @@
-// context/CanvasContext.tsx
-import React, { createContext, useContext, useState, ReactNode } from "react";
-import fetchPrediction from "@/utils/fetchPrediction";
-import { Button } from "@/components/ui/button"
+import React, { createContext, useContext, useState } from "react";
+import fetchPrediction from "../utils/fetchPrediction.ts";
 
-// Define a type for the canvas data (grayscale values)
 interface CanvasContextType {
     canvasData: number[];
-    setCanvasData: (data: number[]) => void;
-    fetchPrediction: (data: number[]) => Promise<number>;
+    setCanvasData: React.Dispatch<React.SetStateAction<number[]>>;
+    predictionProbabilities: number[]; // Add the prediction probabilities to the context
+    setPredictionProbabilities: React.Dispatch<React.SetStateAction<number[]>>; // Add setter for probabilities
+    fetchPrediction: (data: number[]) => Promise<void>;
 }
 
-// Create a context with an initial empty value
 const CanvasContext = createContext<CanvasContextType | undefined>(undefined);
 
-// Define the props for the CanvasProvider component to include children
-interface CanvasProviderProps {
-    children: ReactNode;
-}
-
-// Custom hook to access the context
 export const useCanvasContext = () => {
     const context = useContext(CanvasContext);
     if (!context) {
@@ -27,18 +19,25 @@ export const useCanvasContext = () => {
     return context;
 };
 
-// Create a provider component to wrap the app and provide the context
-export const CanvasProvider: React.FC<CanvasProviderProps> = ({ children }) => {
+export const CanvasProvider: React.FC = ({ children }) => {
     const [canvasData, setCanvasData] = useState<number[]>([]);
-
-    // Placeholder for model prediction function
+    const [predictionProbabilities, setPredictionProbabilities] = useState<number[]>([]); // Add state for prediction probabilities
     const handlefetchPrediction = async (data: number[]) => {
-        console.log("Predicting with data", data);
-        return await fetchPrediction(data);
+        console.log("Fetching prediction for:", data);
+        const probabilities = await fetchPrediction(data);
+        console.log("Setting prediction probabilities:", probabilities);
+        setPredictionProbabilities([...probabilities]);  // Ensure state updates
     };
 
+
     return (
-        <CanvasContext.Provider value={{ canvasData, setCanvasData, fetchPrediction }}>
+        <CanvasContext.Provider value={{
+            canvasData,
+            setCanvasData,
+            predictionProbabilities,
+            setPredictionProbabilities,
+            fetchPrediction: handlefetchPrediction
+        }}>
             {children}
         </CanvasContext.Provider>
     );

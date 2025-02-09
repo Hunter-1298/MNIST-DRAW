@@ -62,7 +62,15 @@ export default function DrawingCanvas() {
         const canvas = canvasRef.current;
         if (!canvas) return;
 
-        // Create a temporary 28x28 canvas
+        // Apply the blur effect before extracting data
+        const ctx = ctxRef.current;
+        if (!ctx) return;
+
+        // Set the blur effect (adjust the value to your desired level)
+        ctx.filter = 'blur(2px)';  // You can change the 2px to a higher value for more blur
+        ctx.drawImage(canvas, 0, 0); // Redraw the canvas content with the blur applied
+
+        // Create a temporary 28x28 canvas for extracting data
         const tempCanvas = document.createElement("canvas");
         const tempCtx = tempCanvas.getContext("2d");
         if (!tempCtx) return;
@@ -83,12 +91,15 @@ export default function DrawingCanvas() {
         for (let i = 0; i < data.length; i += 4) {
             // Extract the red channel (grayscale values are the same in RGB)
             const grayscale = data[i]; // Data[0], which is the red channel
-            grayscaleValues.push(grayscale / 255); // Normalize to 0-1 range
+            grayscaleValues.push(grayscale); // Normalize to 0-1 range
         }
 
-        // Update the context with the grayscale values
-        setCanvasData(grayscaleValues);
-        fetchPrediction(grayscaleValues); // Fetch prediction after updating canvas data
+        // Reset the filter to none for future drawings
+        ctx.filter = 'none';
+
+        // Update the context with the grayscale values and call prediction
+        setCanvasData(grayscaleValues);  // Store the data in context (optional)
+        fetchPrediction(grayscaleValues); // Directly fetch prediction
     };
 
     return (
