@@ -3,8 +3,6 @@
 import DrawingCanvas from "@/components/ui/DrawingCanvas";
 import { OutputChart } from "@/components/ui/OutputChart";
 import { CanvasProvider } from "@/context/CanvasContext";
-import Image from "next/image";
-import MNIST from '../public/mnist-background.jpg';
 
 export default function Home() {
   // You will need to handle predictionProbabilities state, maybe from your model inference logic

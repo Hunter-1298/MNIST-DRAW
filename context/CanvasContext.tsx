@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState } from "react";
-import fetchPrediction from "../utils/fetchPrediction.ts";
+import fetchPrediction from "../utils/fetchPrediction";
 
 interface CanvasContextType {
     canvasData: number[];
@@ -19,7 +19,11 @@ export const useCanvasContext = () => {
     return context;
 };
 
-export const CanvasProvider: React.FC = ({ children }) => {
+type CanvasProviderProps = {
+    children: React.ReactNode;
+}
+
+export const CanvasProvider: React.FC<CanvasProviderProps> = ({ children }) => {
     const [canvasData, setCanvasData] = useState<number[]>([]);
     const [predictionProbabilities, setPredictionProbabilities] = useState<number[]>([]); // Add state for prediction probabilities
     const handlefetchPrediction = async (data: number[]) => {

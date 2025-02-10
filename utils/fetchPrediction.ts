@@ -39,12 +39,12 @@ const fetchPrediction = async (data: number[]) => {
   const outputMap = await session.run(feeds);
   console.log('Model Output:', outputMap);
 
-  // Access the output tensor (replace 'Plus214_Output_0' with actual output name if different)
-  const outputTensor = outputMap['Plus214_Output_0'];  // Replace with actual output name if different
+  // Access the output tensor
+  const outputTensor = outputMap['Plus214_Output_0'];
   console.log('Output Tensor:', outputTensor);
 
   // Extract probabilities from the tensor's data
-  const logits = outputTensor.data as number[];  // Raw output from the model
+  const logits = Array.from(outputTensor.data as Float32Array);  // Explicitly type as Float32Array
   console.log('Logits:', logits);
 
   // Apply softmax to logits to get probabilities
@@ -56,4 +56,3 @@ const fetchPrediction = async (data: number[]) => {
 };
 
 export default fetchPrediction;
-
