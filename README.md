@@ -1,7 +1,8 @@
 # Real-Time MNIST Number Detector
+# https://hunter-1298.github.io/MNIST-DRAW/
+
 
 ![Logo](Frontend__Picture.png)
-https://hunter-1298.github.io/MNIST-DRAW/
 
 
 This project is a web application that allows users to draw digits on a canvas, and it detects the drawn number in real time using a trained MNIST model. The model predicts the number based on the drawn input, which is then processed through a neural network trained on the MNIST dataset.
