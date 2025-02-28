@@ -14,7 +14,7 @@ const fetchPrediction = async (data: number[]) => {
 
   // Create a new inference session for each prediction
   const session = await InferenceSession.create(
-    "/mnist-12.onnx",
+    "/MNIST-DRAW/model//mnist-12.onnx",
     {
       executionProviders: ["webgl"],
     }
